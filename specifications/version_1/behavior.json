@@ -1,0 +1,50 @@
+{
+    "behaviors": [
+        {
+            "id": "SpawnEncounter",
+            "event": "OnCondition",
+            "actors": ["player"],
+            "precondition": {
+                "all": [
+                    { "equals": ["EncounterManager.state", "idle"] },
+                    { "runAlgorithm": "IsPlayerMovingInGrass" }
+                ]
+            },
+            "action": {
+                "runAlgorithm": "TriggerRandomEncounter"
+            }
+        },
+        {
+            "id": "ThrowPokeball",
+            "event": "OnCondition",
+            "actors": ["pokeball"],
+            "precondition": {
+                "all": [
+                    { "equals": ["Self.state", "ready"] },
+                    { "equals": ["EncounterManager.state", "active"] },
+                    { "runAlgorithm": "IsThrowKeyPressed" }
+                ]
+            },
+            "action": {
+                "runAlgorithm": "ThrowPokeball"
+            },
+            "postcondition": {
+                "equals": ["Self.state", "thrown"]
+            }
+        },
+        {
+            "id": "CaptureCheck",
+            "event": "OnCondition",
+            "actors": ["pokeball"],
+            "precondition": {
+                "all": [
+                    { "equals": ["Self.state", "thrown"] },
+                    { "runAlgorithm": "DidPokeballHitMonster" }
+                ]
+            },
+            "action": {
+                "runAlgorithm": "ResolveCapture"
+            }
+        }
+    ]
+}
